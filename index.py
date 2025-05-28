@@ -149,11 +149,14 @@ weight = st.number_input("Berat Badan (kg)", min_value=0.0, step=0.1, format="%.
 result = ""
 imt = 0.0
 
+# Validasi input
 if st.button("Hitung"):
     if age not in standards[gender_key]:
         st.error("Data standar untuk usia ini belum tersedia.")
     elif height <= 0 or weight <= 0:
         st.error("Tinggi badan dan berat badan harus lebih dari 0.")
+    elif height > 150 or weight > 50:
+        st.error("Tinggi badan atau berat badan tidak realistis untuk anak usia 0-60 bulan.")
     else:
         data = standards[gender_key][age]
         zHeight = (height - data["height"]["median"]) / data["height"]["sd"]
@@ -223,6 +226,3 @@ if st.button("Hitung"):
             file_name="status-gizi-anak.pdf",
             mime="application/pdf"
         )
-
-# (File ini sudah dalam bahasa Python dan sudah sesuai format Streamlit)
-# Tidak ada perubahan yang diperlukan.
