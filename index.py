@@ -3,10 +3,6 @@ st.set_page_config(page_title="Aplikasi Perhitungan Status Gizi Anak", layout="c
 from fpdf import FPDF
 import io
 
-# Tambahkan custom CSS
-with open("styles.css") as f:
-    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-
 st.title("Kalkulator Status Gizi Anak")
 
 # Data standar (hanya sebagian, tambahkan sesuai kebutuhan)
@@ -141,9 +137,9 @@ standards = {
 
 gender = st.selectbox("Jenis Kelamin", options=["Laki-laki", "Perempuan"])
 gender_key = "male" if gender == "Laki-laki" else "female"
-age = st.number_input("Usia (bulan)", min_value=0, max_value=60, step=1, placeholder="Masukkan usia (0-60)")
-height = st.number_input("Tinggi Badan (cm)", min_value=0.0, step=0.1, format="%.1f", placeholder="Masukkan tinggi badan")
-weight = st.number_input("Berat Badan (kg)", min_value=0.0, step=0.1, format="%.1f", placeholder="Masukkan berat badan")
+age = st.number_input("Usia (bulan)", min_value=0, max_value=60, step=1)
+height = st.number_input("Tinggi Badan (cm)", min_value=0.0, step=0.1, format="%.1f")
+weight = st.number_input("Berat Badan (kg)", min_value=0.0, step=0.1, format="%.1f")
 
 result = ""
 imt = 0.0
