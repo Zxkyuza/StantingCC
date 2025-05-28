@@ -1,126 +1,152 @@
-/* Mengatur tampilan umum halaman */
+/* Importing Google Fonts for a modern look */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+/* General page styling */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f7fa;
-    color: #333;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #e9ecef; /* Light gray background for a clean look */
+    color: #1a1a1a; /* Darker text for high contrast */
+    margin: 0;
+    padding: 0;
 }
 
-/* Mengatur container utama Streamlit */
+/* Streamlit main container */
 .stApp {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 900px; /* Slightly wider for modern screens */
+    margin: 20px auto;
+    padding: 30px;
+    background-color: #ffffff; /* White container for contrast */
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease; /* Subtle animation on load */
 }
 
-/* Styling untuk judul */
+/* Header styling */
 h1 {
-    color: #2c3e50;
+    color: #1e3a8a; /* Deep blue for a professional feel */
     text-align: center;
-    font-size: 2.5em;
-    margin-bottom: 20px;
+    font-size: 2.8em;
+    font-weight: 700;
+    margin-bottom: 30px;
+    letter-spacing: -0.02em;
 }
 
-/* Styling untuk selectbox dan number input */
+/* Styling for selectbox and number input */
 .stSelectbox, .stNumberInput {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 .stSelectbox > div > div > div > select,
 .stNumberInput > div > div > input {
-    border: 1px solid #3498db;
-    border-radius: 5px;
-    padding: 10px;
-    font-size: 1em;
-    background-color: #f9f9f9;
-    transition: border-color 0.3s ease;
+    border: 2px solid #3b82f6; /* Vibrant blue border */
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 1.1em;
+    background-color: #f8fafc; /* Light background for inputs */
+    color: #1a1a1a; /* Dark text for readability */
+    transition: all 0.3s ease;
 }
 
 .stSelectbox > div > div > div > select:focus,
 .stNumberInput > div > div > input:focus {
-    border-color: #2980b9;
+    border-color: #1e40af; /* Darker blue on focus */
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
     outline: none;
-    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
 }
 
-/* Styling untuk label input */
+/* Input labels */
 .stSelectbox > div > label,
 .stNumberInput > div > label {
-    font-weight: bold;
-    color: #2c3e50;
-    margin-bottom: 5px;
+    font-weight: 600;
+    color: #1e3a8a; /* Matching deep blue */
+    margin-bottom: 8px;
+    font-size: 1.1em;
 }
 
-/* Styling untuk tombol */
+/* Button styling */
 .stButton > button {
-    background-color: #3498db;
-    color: white;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa); /* Gradient blue */
+    color: #ffffff;
     border: none;
-    border-radius: 5px;
-    padding: 12px 20px;
-    font-size: 1.1em;
+    border-radius: 8px;
+    padding: 14px 24px;
+    font-size: 1.2em;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
     width: 100%;
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
 .stButton > button:hover {
-    background-color: #2980b9;
+    background: linear-gradient(90deg, #2563eb, #3b82f6); /* Darker gradient on hover */
+    transform: translateY(-2px); /* Subtle lift effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Styling untuk tombol download PDF */
+/* Download button styling */
 .stDownloadButton > button {
-    background-color: #2ecc71;
-    color: white;
+    background: linear-gradient(90deg, #22c55e, #4ade80); /* Green gradient */
+    color: #ffffff;
     border: none;
-    border-radius: 5px;
-    padding: 12px 20px;
-    font-size: 1.1em;
+    border-radius: 8px;
+    padding: 14px 24px;
+    font-size: 1.2em;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
     width: 100%;
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
 .stDownloadButton > button:hover {
-    background-color: #27ae60;
+    background: linear-gradient(90deg, #16a34a, #22c55e); /* Darker green on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Styling untuk pesan error */
+/* Error message styling */
 .stError {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-    border-radius: 5px;
+    background-color: #fee2e2; /* Light red background */
+    color: #991b1b; /* Dark red text */
+    border: 2px solid #f87171;
+    border-radius: 8px;
     padding: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    font-weight: 500;
 }
 
-/* Styling untuk hasil markdown */
+/* Markdown result styling */
 .stMarkdown {
-    background-color: #ecf0f1;
-    border-radius: 5px;
-    padding: 15px;
-    margin-top: 20px;
-    line-height: 1.6;
-    color: #2c3e50;
+    background-color: #f1f5f9; /* Light slate background */
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 25px;
+    line-height: 1.7;
+    color: #1a1a1a; /* High contrast text */
+    border-left: 4px solid #3b82f6; /* Blue accent */
 }
 
-/* Responsif untuk layar kecil */
+/* Responsive design */
 @media (max-width: 600px) {
     .stApp {
-        padding: 10px;
+        margin: 10px;
+        padding: 15px;
+        border-radius: 10px;
     }
 
     h1 {
-        font-size: 2em;
+        font-size: 2.2em;
     }
 
     .stButton > button,
     .stDownloadButton > button {
+        font-size: 1.1em;
+        padding: 12px 20px;
+    }
+
+    .stSelectbox > div > div > div > select,
+    .stNumberInput > div > div > input {
         font-size: 1em;
         padding: 10px;
     }
