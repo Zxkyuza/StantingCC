@@ -251,4 +251,4 @@ if st.button("Hitung"):
                 data=pdf_output,
                 file_name="status-gizi-anak.pdf",
                 mime="application/pdf"
-            )s
+            )
