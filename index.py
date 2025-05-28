@@ -141,87 +141,87 @@ standards = {
 
 gender = st.selectbox("Jenis Kelamin", options=["Laki-laki", "Perempuan"])
 gender_key = "male" if gender == "Laki-laki" else "female"
-age = st.number_input("Usia (bulan)", min_value=0, max_value=60, step=1)
-height = st.number_input("Tinggi Badan (cm)", min_value=0.0, step=0.1, format="%.1f")
-weight = st.number_input("Berat Badan (kg)", min_value=0.0, step=0.1, format="%.1f")
+age = st.number_input("Usia (bulan)", min_value=0, max_value=60, step=1, placeholder="Masukkan usia (0-60)")
+height = st.number_input("Tinggi Badan (cm)", min_value=0.0, step=0.1, format="%.1f", placeholder="Masukkan tinggi badan")
+weight = st.number_input("Berat Badan (kg)", min_value=0.0, step=0.1, format="%.1f", placeholder="Masukkan berat badan")
 
 result = ""
 imt = 0.0
 
-# Validasi input
 if st.button("Hitung"):
-    if age not in standards[gender_key]:
-        st.error("Data standar untuk usia ini belum tersedia.")
-    elif height <= 0 or weight <= 0:
-        st.error("Tinggi badan dan berat badan harus lebih dari 0.")
-    elif height > 150 or weight > 50:
-        st.error("Tinggi badan atau berat badan tidak realistis untuk anak usia 0-60 bulan.")
-    else:
-        data = standards[gender_key][age]
-        zHeight = (height - data["height"]["median"]) / data["height"]["sd"]
-        zWeight = (weight - data["weight"]["median"]) / data["weight"]["sd"]
-        imt = weight / ((height / 100) ** 2)
-        zImt = (imt - data["imt"]["median"]) / data["imt"]["sd"]
-
-        # Status BB/U
-        if zWeight < -3:
-            statusWeight = 'Sangat Kurang'
-        elif -3 <= zWeight < -2:
-            statusWeight = 'Kurang'
-        elif -2 <= zWeight <= 1:
-            statusWeight = 'Normal'
+    with st.spinner("Menghitung..."):
+        if age not in standards[gender_key]:
+            st.error("Data standar untuk usia ini belum tersedia. Silakan masukkan usia antara 0-60 bulan.")
+        elif height <= 0 or weight <= 0:
+            st.error("Tinggi badan dan berat badan harus lebih dari 0.")
+        elif height > 150 or weight > 50:
+            st.error("Tinggi badan atau berat badan tidak realistis untuk anak usia 0-60 bulan.")
         else:
-            statusWeight = 'Risiko Berlebih'
+            data = standards[gender_key][age]
+            zHeight = (height - data["height"]["median"]) / data["height"]["sd"]
+            zWeight = (weight - data["weight"]["median"]) / data["weight"]["sd"]
+            imt = weight / ((height / 100) ** 2)
+            zImt = (imt - data["imt"]["median"]) / data["imt"]["sd"]
 
-        # Status TB/U
-        if zHeight < -3:
-            statusHeight = 'Sangat Pendek (Stunting Berat)'
-        elif -3 <= zHeight < -2:
-            statusHeight = 'Pendek (Stunting)'
-        elif -2 <= zHeight <= 3:
-            statusHeight = 'Normal'
-        else:
-            statusHeight = 'Tinggi (Risiko Berlebih)'
+            # Status BB/U
+            if zWeight < -3:
+                statusWeight = 'Sangat Kurang'
+            elif -3 <= zWeight < -2:
+                statusWeight = 'Kurang'
+            elif -2 <= zWeight <= 1:
+                statusWeight = 'Normal'
+            else:
+                statusWeight = 'Risiko Berlebih'
 
-        # Status IMT/U
-        if zImt < -3:
-            statusImt = 'Gizi Buruk'
-        elif -3 <= zImt < -2:
-            statusImt = 'Gizi Kurang'
-        elif -2 <= zImt <= 1:
-            statusImt = 'Gizi Baik'
-        elif 1 < zImt <= 2:
-            statusImt = 'Berisiko Gizi Lebih'
-        elif 2 < zImt <= 3:
-            statusImt = 'Gizi Lebih'
-        else:
-            statusImt = 'Obesitas'
+            # Status TB/U
+            if zHeight < -3:
+                statusHeight = 'Sangat Pendek (Stunting Berat)'
+            elif -3 <= zHeight < -2:
+                statusHeight = 'Pendek (Stunting)'
+            elif -2 <= zHeight <= 3:
+                statusHeight = 'Normal'
+            else:
+                statusHeight = 'Tinggi (Risiko Berlebih)'
 
-        result = (
-            f"**Status BB/U:** {statusWeight}\n"
-            f"**Status TB/U:** {statusHeight}\n"
-            f"**IMT/U:** {imt:.2f}\n"
-            f"**Status IMT/U:** {statusImt}"
-        )
-        st.markdown(result)
+            # Status IMT/U
+            if zImt < -3:
+                statusImt = 'Gizi Buruk'
+            elif -3 <= zImt < -2:
+                statusImt = 'Gizi Kurang'
+            elif -2 <= zImt <= 1:
+                statusImt = 'Gizi Baik'
+            elif 1 < zImt <= 2:
+                statusImt = 'Berisiko Gizi Lebih'
+            elif 2 < zImt <= 3:
+                statusImt = 'Gizi Lebih'
+            else:
+                statusImt = 'Obesitas'
 
-        # PDF generation
-        pdf = FPDF()
-        pdf.add_page()
-        pdf.set_font("Arial", size=12)
-        pdf.cell(0, 10, "Hasil Status Gizi Anak", ln=True)
-        pdf.cell(0, 10, f"Jenis Kelamin: {gender}", ln=True)
-        pdf.cell(0, 10, f"Usia (bulan): {age}", ln=True)
-        pdf.cell(0, 10, f"Tinggi Badan (cm): {height}", ln=True)
-        pdf.cell(0, 10, f"Berat Badan (kg): {weight}", ln=True)
-        pdf.cell(0, 10, f"Status BB/U: {statusWeight}", ln=True)
-        pdf.cell(0, 10, f"Status TB/U: {statusHeight}", ln=True)
-        pdf.cell(0, 10, f"IMT/U: {imt:.2f}", ln=True)
-        pdf.cell(0, 10, f"Status IMT/U: {statusImt}", ln=True)
-        pdf_output = pdf.output(dest='S').encode('latin-1')
-        st.download_button(
-            label="Download PDF",
-            data=pdf_output,
-            file_name="status-gizi-anak.pdf",
-            mime="application/pdf"
-        )
+            result = (
+                f"**Status BB/U:** {statusWeight}\n"
+                f"**Status TB/U:** {statusHeight}\n"
+                f"**IMT/U:** {imt:.2f}\n"
+                f"**Status IMT/U:** {statusImt}"
+            )
+            st.markdown(result)
+
+            # PDF generation
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_font("Arial", size=12)
+            pdf.cell(0, 10, "Hasil Status Gizi Anak", ln=True)
+            pdf.cell(0, 10, f"Jenis Kelamin: {gender}", ln=True)
+            pdf.cell(0, 10, f"Usia (bulan): {age}", ln=True)
+            pdf.cell(0, 10, f"Tinggi Badan (cm): {height}", ln=True)
+            pdf.cell(0, 10, f"Berat Badan (kg): {weight}", ln=True)
+            pdf.cell(0, 10, f"Status BB/U: {statusWeight}", ln=True)
+            pdf.cell(0, 10, f"Status TB/U: {statusHeight}", ln=True)
+            pdf.cell(0, 10, f"IMT/U: {imt:.2f}", ln=True)
+            pdf.cell(0, 10, f"Status IMT/U: {statusImt}", ln=True)
+            pdf_output = pdf.output(dest='S').encode('latin-1')
+            st.download_button(
+                label="Download PDF",
+                data=pdf_output,
+                file_name="status-gizi-anak.pdf",
+                mime="application/pdf"
+            )
