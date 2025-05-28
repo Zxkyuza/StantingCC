@@ -1,10 +1,7 @@
 import streamlit as st
 st.set_page_config(page_title="Aplikasi Perhitungan Status Gizi Anak", layout="centered")
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
-from reportlab.lib import colors
-from reportlab.lib.styles import getSampleStyleSheet
-from io import BytesIO
+from fpdf import FPDF
+import io
 
 st.title("Kalkulator Status Gizi Anak")
 
@@ -204,48 +201,20 @@ if st.button("Hitung"):
             )
             st.markdown(result)
 
-            # PDF generation with reportlab
-            buffer = BytesIO()
-            doc = SimpleDocTemplate(buffer, pagesize=letter)
-            elements = []
-
-            styles = getSampleStyleSheet()
-            title = Paragraph("Hasil Status Gizi Anak", styles['Title'])
-            elements.append(title)
-            elements.append(Paragraph("<br/>", styles['Normal']))
-
-            data_table = [
-                ["Jenis Kelamin", gender],
-                ["Usia (bulan)", str(age)],
-                ["Tinggi Badan (cm)", str(height)],
-                ["Berat Badan (kg)", str(weight)],
-                ["Status BB/U", statusWeight],
-                ["Status TB/U", statusHeight],
-                ["IMT/U", f"{imt:.2f}"],
-                ["Status IMT/U", statusImt],
-            ]
-
-            table = Table(data_table)
-            table.setStyle(TableStyle([
-                ('BACKGROUND', (0, 0), (0, -1), colors.lightgrey),
-                ('TEXTCOLOR', (0, 0), (-1, -1), colors.black),
-                ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-                ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
-                ('FONTSIZE', (0, 0), (-1, -1), 12),
-                ('GRID', (0, 0), (-1, -1), 1, colors.black),
-                ('BOX', (0, 0), (-1, -1), 1, colors.black),
-                ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-                ('LEFTPADDING', (0, 0), (-1, -1), 6),
-                ('RIGHTPADDING', (0, 0), (-1, -1), 6),
-                ('TOPPADDING', (0, 0), (-1, -1), 6),
-                ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
-            ]))
-            elements.append(table)
-
-            doc.build(elements)
-            pdf_output = buffer.getvalue()
-            buffer.close()
-
+            # PDF generation
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_font("Arial", size=12)
+            pdf.cell(0, 10, "Hasil Status Gizi Anak", ln=True)
+            pdf.cell(0, 10, f"Jenis Kelamin: {gender}", ln=True)
+            pdf.cell(0, 10, f"Usia (bulan): {age}", ln=True)
+            pdf.cell(0, 10, f"Tinggi Badan (cm): {height}", ln=True)
+            pdf.cell(0, 10, f"Berat Badan (kg): {weight}", ln=True)
+            pdf.cell(0, 10, f"Status BB/U: {statusWeight}", ln=True)
+            pdf.cell(0, 10, f"Status TB/U: {statusHeight}", ln=True)
+            pdf.cell(0, 10, f"IMT/U: {imt:.2f}", ln=True)
+            pdf.cell(0, 10, f"Status IMT/U: {statusImt}", ln=True)
+            pdf_output = pdf.output(dest='S').encode('latin-1')
             st.download_button(
                 label="Download PDF",
                 data=pdf_output,
