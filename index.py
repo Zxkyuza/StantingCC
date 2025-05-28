@@ -1,12 +1,11 @@
 import streamlit as st
+st.set_page_config(page_title="Aplikasi Perhitungan Status Gizi Anak", layout="centered")
 from fpdf import FPDF
 import io
 
 # Tambahkan custom CSS
 with open("styles.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-
-st.set_page_config(page_title="Aplikasi Perhitungan Status Gizi Anak", layout="centered")
 
 st.title("Kalkulator Status Gizi Anak")
 
